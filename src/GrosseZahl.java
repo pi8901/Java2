@@ -1,120 +1,189 @@
+import java.util.Arrays;
 
 public class GrosseZahl
 {
-	
+
 	int[] num;
 
 	public static void main(String[] args)
 	{
-		GrosseZahl x = new GrosseZahl(208);
-		GrosseZahl y = new GrosseZahl("212");
-		
-		
-	
-		System.out.println(x.toString());
-		System.out.println(y.toString());
-		
-		System.out.println(x.less(y));
-		x.add(y);
 
+		GrosseZahl x = new GrosseZahl(24);
+		GrosseZahl y = new GrosseZahl("8");
+		
+		System.out.println(x.mult(y));
+		System.out.println(x.sub(y));
+		System.out.println(x.add(y));
+		System.out.println(x.ggT(y));
+		System.out.println(x.less(y));
 	}
-	
-	//done
+
+	//Konstruktor für String
 	GrosseZahl(String d)
 	{
 		num = new int[d.length()];
-		d = new StringBuilder(d).reverse().toString();
-		
-		for(int i = 0; i < d.length(); i ++)
+		for (int i = d.length() - 1; i >= 0; i--)
 		{
 			num[i] = Character.getNumericValue((d.charAt(i)));
 		}
-		
-		
 	}
-	
-	//done
+
+	//Konstruktor für int
 	GrosseZahl(int z)
 	{
-		String d = z + "";
-		d = new StringBuilder(d).reverse().toString();
-		num = new int[d.length()];
-		for(int i = 0; i < d.length(); i ++)
-		{
-			num[i] = Character.getNumericValue((d.charAt(i)));
-		}
-		
+		this.num = new GrosseZahl(z + "").num;
 	}
-	
-	//done
+
+	//Umwandeln in String
 	public String toString()
 	{
-		String s  = "";
-		for(int i = num.length - 1; i >= 0; i--)
+		String s = "";
+		for (int i = num.length - 1; i >= 0; i--)
 		{
-			s = s + num[i];
+			s = num[i] + s;
 		}
 		return s;
 	}
-	
-	
-	//done
+
+	//Größer, kleiner Prüfung (ist this < x
 	private boolean less(GrosseZahl x)
 	{
-		if(this.num.length < x.num.length)
+		if (this.num.length < x.num.length)
 		{
 			return true;
-		}
-		else if(this.num.length > x.num.length)
+		} 
+		else if (this.num.length > x.num.length)
 		{
 			return false;
 		}
-		
-		for(int i = this.num.length - 1; i >= 0; i--)
+
+		for (int i = this.num.length - 1; i >= 0; i--)
 		{
-			if( this.num[i] < x.num[i])
+			if (this.num[i] < x.num[i])
 			{
 				return true;
-			}
-			else if(this.num[i] > x.num[i])
+			} 
+			else if (this.num[i] > x.num[i])
 			{
 				return false;
 			}
 		}
 		return false;
 	}
-	
-	
+
+	//Addition
 	private GrosseZahl add(GrosseZahl x)
 	{
+		//Beide Zahlen auf die gleiche Größe bringen (0 anhängen)
+		if (x.num.length < this.num.length)
+		{
+			x = new GrosseZahl(String.format("%0" + (this.num.length - x.num.length) + "d%s", 0, x.toString()));
+		} 
+		else if (x.num.length > this.num.length)
+		{
+			return (x.add(this));
+		}
+
 		String out = "";
 		int offset = 0;
-		
-		for(int i = 0; i < this.num.length - 1; i++)
+
+		for (int i = x.num.length - 1; i >= 0; i--)
 		{
-			out = out + this.num[i] + x.num[i];
-			if(this.num[i] + x.num[i] + offset > 9)
+			//Übertrag
+			if (x.num[i] + this.num[i] + offset > 9)
 			{
+				out = (x.num[i] + this.num[i] + offset - 10) + out;
 				offset = 1;
+			} 
+			//Kein Übertrag
+			else
+			{
+				out = (x.num[i] + this.num[i] + offset) + out;
+				offset = 0;
 			}
 		}
-		
-		return null;
+		//Bei Übertrag auf der höchsten Zahl (90 + 11 = 101)
+		if (offset == 1)
+		{
+			out = 1 + out;
+		}
+		return new GrosseZahl(out);
 	}
-	
+
+	//Subtraktion
+	private GrosseZahl sub(GrosseZahl x)
+	{
+		//Beide Zahlen auf die gleiche Größe bringen (0 anhängen)
+		if (x.num.length < this.num.length)
+		{
+			x = new GrosseZahl(String.format("%0" + (this.num.length - x.num.length) + "d%s", 0, x.toString()));
+		} else if (x.num.length > this.num.length)
+		{
+			return (x.sub(this));
+		}
+
+		String out = "";
+		int offset = 0;
+
+		for (int i = x.num.length - 1; i >= 0; i--)
+		{
+			//Übertrag
+			if (this.num[i] - x.num[i] - offset < 0)
+			{
+				out = (this.num[i] - x.num[i] - offset + 10) + out;
+				offset = 1;
+			} 
+			//Kein Übertrag
+			else
+			{
+				out = (this.num[i] - x.num[i] - offset) + out;
+				offset = 0;
+			}
+		}
+
+		//Entstandenen Nullen entfernen (013 -> 13)
+		out = out.replaceAll("^0*", "");
+
+		return new GrosseZahl(out);
+	}
+
+	//Multiplikation
 	private GrosseZahl mult(GrosseZahl x)
 	{
-		return null;
+		GrosseZahl g = new GrosseZahl(0);
+		for (int i = 0; i < x.num.length; i++)
+		{
+			/*
+			 * Addiert sich selbst x.num[i] * 10 ^ i mal
+			 * 
+			 * Beispiel:
+			 * 5 * 32 =>
+			 * x + 5 * (2 * 10 ^ 0 )->2
+			 * +
+			 * x + 5 * (3 * 10 ^ 1)->30
+			 */
+			for (int j = 0; j < x.num[x.num.length - i - 1] * Math.pow(10, i); j++)
+			{
+				g = g.add(this);
+			}
+		}
+		return g;
 	}
-	
-	
+
+	//Größter gemeinsamer Teiler
 	private GrosseZahl ggT(GrosseZahl x)
 	{
-		return null;
+		if (!Arrays.equals(x.num, this.num))
+		{
+			if (this.less(x))
+			{
+				return this.ggT(this.sub(x));
+			} 
+			else
+			{
+				return x.ggT(x.sub(this));
+			}
+		}
+		return x;
 	}
-	
-	
-	
-	
-
 }
