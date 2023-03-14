@@ -8,8 +8,8 @@ public class GrosseZahl
 	public static void main(String[] args)
 	{
 
-		GrosseZahl x = new GrosseZahl(24);
-		GrosseZahl y = new GrosseZahl("8");
+		GrosseZahl x = new GrosseZahl(1);
+		GrosseZahl y = new GrosseZahl("24");
 		
 		System.out.println(x.mult(y));
 		System.out.println(x.sub(y));
@@ -177,11 +177,11 @@ public class GrosseZahl
 		{
 			if (this.less(x))
 			{
-				return this.ggT(this.sub(x));
+				return this.ggT(x.sub(this));
 			} 
 			else
 			{
-				return x.ggT(x.sub(this));
+				return x.ggT(this.sub(x));
 			}
 		}
 		return x;
