@@ -7,15 +7,6 @@ public class GrosseZahl
 
 	public static void main(String[] args)
 	{
-
-		GrosseZahl x = new GrosseZahl(1);
-		GrosseZahl y = new GrosseZahl("24");
-		
-		System.out.println(x.mult(y));
-		System.out.println(x.sub(y));
-		System.out.println(x.add(y));
-		System.out.println(x.ggT(y));
-		System.out.println(x.less(y));
 	}
 
 	//Konstruktor für String
@@ -46,7 +37,7 @@ public class GrosseZahl
 	}
 
 	//Größer, kleiner Prüfung (ist this < x
-	private boolean less(GrosseZahl x)
+	public boolean less(GrosseZahl x)
 	{
 		if (this.num.length < x.num.length)
 		{
@@ -57,7 +48,7 @@ public class GrosseZahl
 			return false;
 		}
 
-		for (int i = this.num.length - 1; i >= 0; i--)
+		for (int i = 0; i < this.num.length; i++)
 		{
 			if (this.num[i] < x.num[i])
 			{
@@ -72,7 +63,7 @@ public class GrosseZahl
 	}
 
 	//Addition
-	private GrosseZahl add(GrosseZahl x)
+	public GrosseZahl add(GrosseZahl x)
 	{
 		//Beide Zahlen auf die gleiche Größe bringen (0 anhängen)
 		if (x.num.length < this.num.length)
@@ -111,13 +102,14 @@ public class GrosseZahl
 	}
 
 	//Subtraktion
-	private GrosseZahl sub(GrosseZahl x)
+	public GrosseZahl sub(GrosseZahl x)
 	{
 		//Beide Zahlen auf die gleiche Größe bringen (0 anhängen)
 		if (x.num.length < this.num.length)
 		{
 			x = new GrosseZahl(String.format("%0" + (this.num.length - x.num.length) + "d%s", 0, x.toString()));
-		} else if (x.num.length > this.num.length)
+		} 
+		else if (x.num.length > this.num.length)
 		{
 			return (x.sub(this));
 		}
@@ -148,7 +140,7 @@ public class GrosseZahl
 	}
 
 	//Multiplikation
-	private GrosseZahl mult(GrosseZahl x)
+	public GrosseZahl mult(GrosseZahl x)
 	{
 		GrosseZahl g = new GrosseZahl(0);
 		for (int i = 0; i < x.num.length; i++)
@@ -171,7 +163,7 @@ public class GrosseZahl
 	}
 
 	//Größter gemeinsamer Teiler
-	private GrosseZahl ggT(GrosseZahl x)
+	public GrosseZahl ggT(GrosseZahl x)
 	{
 		if (!Arrays.equals(x.num, this.num))
 		{
