@@ -1,5 +1,6 @@
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class CharCollection {
@@ -35,7 +36,9 @@ public class CharCollection {
 	}
 	
 	int different() {
-		//Collections.frequency(list, list);
+		Set<String> distinctSet = new HashSet(list);
+		
+		return distinctSet.size();
 	}
 
 	int top() {
@@ -69,7 +72,10 @@ public class CharCollection {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		CharCollection cc = new CharCollection('A', 'B', 'R', 'A', 'K', 'A', 'D', 'A', 'B', 'R', 'A');
+		System.out.println(cc.size());
+		System.out.println(cc.count('A'));
+		System.out.println(cc.different());
 	}
 
 }
