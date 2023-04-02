@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class CharCollection {
@@ -20,17 +21,21 @@ public class CharCollection {
 	}
 	
 	int size() {
-		return 0;
+		return list.size();
 	}
 	
-	int count(char c) {
-		
-		return 0;
+	 int count(char c) {
+		int counter = 0;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).equals(c)) {
+				counter++;
+			} 
+		}
+		return counter;
 	}
 	
 	int different() {
-		
-		return 0;
+		//Collections.frequency(list, list);
 	}
 
 	int top() {
