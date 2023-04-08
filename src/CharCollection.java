@@ -45,6 +45,10 @@ public class CharCollection {
 
 	char top() {
 		
+		if(this.size() == 0)
+		{
+			return 0;
+		}
 		char top = list.get(0);
 		int max = 0;
 		int max_o = 0;
@@ -89,27 +93,55 @@ public class CharCollection {
 	
 	public boolean equals(Object x) {
 		
-		return (list.containsAll((Collection<?>) x));
+		try
+		{
+			CharCollection y = (CharCollection) x;
+			this.list.sort(null);
+			y.list.sort(null);
+			if(this.list.equals(y.list))
+			{
+				return true;
+			}
+			return false;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 	
-	CharCollection except(CharCollection cc) {
+	CharCollection except(CharCollection cc) 
+	{
+		CharCollection copy = this;
+		int i = 0;
+		while(i < copy.size())
+		{
+			for (int j = 0; j < cc.size() - 1; j++)
+			{
+				if(copy.list.get(i) == cc.list.get(j))
+				{
+					copy.list.remove(i);
+				}
+			}
+		i++;
+		}
 		
-		list.removeAll(cc.list);
-		System.out.println(list);
 		
-		return new CharCollection(list.toString());
+		return copy;
 	}
 	
-	boolean isSubset(CharCollection cc) {
-		return list.is
+	boolean isSubset(CharCollection cc) 
+	{
+		return this.list.toString().contains(cc.list.toString());
 	}
 	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CharCollection cc = new CharCollection('m','x','B', 'R', 'A','m', 'K', 'A','m', 'D','m', 'A', 'B','m', 'R', 'A','m');
+		CharCollection a = new CharCollection('A', 'N', 'A', 'N', 'A', 'S');
+		CharCollection cc = new CharCollection("NASE");
 		CharCollection cd = new CharCollection('B', 'R', 'x');
-		System.out.println(cc.isSubset(cd));
+		System.out.println(a.except(cc));
 	}
 
 }
