@@ -1,11 +1,11 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 
 public class CharCollection {
+	
+	static CharCollection a, b, c, d;
 
 	ArrayList<Character> list = new ArrayList<Character>();
 	
@@ -27,7 +27,7 @@ public class CharCollection {
 		return list.size();
 	}
 	
-	 int count(char c) {
+	int count(char c) {
 		int counter = 0;
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).equals(c)) {
@@ -74,16 +74,26 @@ public class CharCollection {
 	}
 	 
 	@Override
-	public String toString() {
-		return list.toString();
+	public String toString() 
+	{
+		String out = "(";
+		for(int i = 0; i < list.size(); i++)
+		{
+			out = out + list.get(i) + ", ";
+		}
+		if( list.size() == 0)
+		{
+			return "()";
+		}
+		 return out.substring(0 ,out.length() - 2) + ")";
 	}
 	
-	public CharCollection moreThan(int m) {
-		
+	public CharCollection moreThan(int m) 
+	{
 		String out = "";
 		for(int i = 0; i < list.size(); i++)
 		{
-			if(count(list.get(i)) <= m)
+			if(count(list.get(i)) > m )
 			{
 				out = out + list.get(i);
 			}
@@ -112,36 +122,39 @@ public class CharCollection {
 	
 	CharCollection except(CharCollection cc) 
 	{
-		CharCollection copy = this;
-		int i = 0;
-		while(i < copy.size())
+		ArrayList<Character> copy = (ArrayList<Character>) this.list.clone();
+		for(int i = 0; i < cc.size(); i ++)
 		{
-			for (int j = 0; j < cc.size() - 1; j++)
-			{
-				if(copy.list.get(i) == cc.list.get(j))
-				{
-					copy.list.remove(i);
-				}
-			}
-		i++;
+			copy.remove(cc.list.get(i));
 		}
+		System.out.println("Hello" + this.list);
 		
-		
-		return copy;
+		String s = "";
+		for(int i = 0; i < copy.size(); i++)
+		{
+			s = s + copy.get(i);
+		}
+		return new CharCollection(s);
 	}
 	
 	boolean isSubset(CharCollection cc) 
 	{
-		return this.list.toString().contains(cc.list.toString());
+		for(int i = 0; i < cc.size(); i++)
+		{
+			char x = cc.list.get(i);
+			if(count(x) < cc.count(x))
+					{
+						return false;
+					}
+		}
+		return true;
 	}
 	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CharCollection a = new CharCollection('A', 'N', 'A', 'N', 'A', 'S');
-		CharCollection cc = new CharCollection("NASE");
-		CharCollection cd = new CharCollection('B', 'R', 'x');
-		System.out.println(a.except(cc));
+		a = new CharCollection('A', 'N', 'A', 'N', 'A', 'S');
+		System.out.println(a.except(new CharCollection("ANA")).equals(new CharCollection("ANANAS")));
 	}
 
 }
