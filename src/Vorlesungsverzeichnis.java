@@ -12,12 +12,20 @@ public class Vorlesungsverzeichnis {
 	public Vorlesungsverzeichnis(String dateiname) {
 		 try {
 			List<List<String>> str = load(dateiname);
-			System.out.println(str);
+			String out = "";
+			for (int i = 0; i < str.size(); i++) {
+				for (int j = 0; j < 4; j++) {
+					out += str.get(i).get(j);
+				}
+				
+			}
+			System.out.println(out);
+ 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("TextFileFormatException : " + e);
 		}
-		//System.out.println(str);
+
 	}
 
 
