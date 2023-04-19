@@ -27,22 +27,42 @@ public class Vorlesungsverzeichnis
 			// TODO Auto-generated catch block
 			System.out.println("TextFileFormatException : " + e);
 		}
-
+	}
+	
+	public List<String> titles()
+	{
+		List<String> titles = new ArrayList<String>();
+		
+		for (Iterator<Vorlesung> it = set.iterator(); it.hasNext(); ) 
+		{
+	        titles.add( it.next().Titel);
+		}
+		return titles;
 	}
 	
 	public Set<String> Workaholic()
 	{
-		int num = 2;
+		Set<String> work = new HashSet<String>();
+		int min = 2;
 		
 		for (Iterator<Vorlesung> it = set.iterator(); it.hasNext(); ) 
 		{
-	        Vorlesung f = it.next();
-	        
-	        
+			String s =it.next().Dozent;
+			int c = 0;
+			for (Iterator<Vorlesung> it2 = set.iterator(); it2.hasNext(); ) 
+			{
+				if(s.equals( it2.next().Dozent))
+				{
+					c++;
+				}
+				
+				if(c >= min)
+				{
+					work.add(s);
+				}
+			}
 		}
-	        
-	        
-	        
+		return work;
 	}
 	
 	public static List<List<String>> load(String filename) throws IOException
@@ -59,7 +79,11 @@ public class Vorlesungsverzeichnis
 	{
 		// TODO Auto-generated method stub
 		Vorlesungsverzeichnis vor = new Vorlesungsverzeichnis(
-				"C:\\Users\\pi890\\eclipse-workspace\\Java2\\src\\Vorlesungsdaten.txt");
+				"C:\\Users\\pi890\\OneDrive\\Dokumente\\UNI\\Semester 2\\Java2\\Java2\\src\\Vorlesungsdaten.txt");
+		
+		System.out.println(vor.Workaholic().toString());
+		
+		
 		
 	}
 
