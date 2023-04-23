@@ -15,5 +15,11 @@ public class Vorlesung {
 		Teilnehmeranzahl = x.get(3);
 	}
 	
+	@Override
+	public String toString()
+	{
+		return Gruppe + " " + Titel+ " " + Dozent+ " " + Teilnehmeranzahl;
+	}
+	
 	
 }
