@@ -5,21 +5,21 @@ public class Vorlesung {
 	String Gruppe;
 	String Titel;
 	String Dozent;
-	String Teilnehmeranzahl;
+	int Teilnehmeranzahl;
 	
-	
-	public Vorlesung(List<String> x) {
+	//Geht
+	public Vorlesung(List<String> x)
+	{
+		for(int i = 0; i < x.size(); i++)
+		{
+			if(x.get(i) == "")
+			{
+				throw new TextFileFormatException();
+			}
+		}
 		Gruppe = x.get(0);
 		Titel = x.get(1);
 		Dozent = x.get(2);
-		Teilnehmeranzahl = x.get(3);
+		Teilnehmeranzahl = Integer.parseInt(x.get(3));
 	}
-	
-	@Override
-	public String toString()
-	{
-		return Gruppe + " " + Titel+ " " + Dozent+ " " + Teilnehmeranzahl;
-	}
-	
-	
 }

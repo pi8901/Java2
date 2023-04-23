@@ -1,8 +1,11 @@
-import java.io.IOException;
-
-class TextFileFormatException extends IOException
+class TextFileFormatException extends IndexOutOfBoundsException
 {
-      // Parameterless Constructor
+      /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	// Parameterless Constructor
       public TextFileFormatException() {}
 
       // Constructor that accepts a message
