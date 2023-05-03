@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,43 +11,20 @@ import java.util.regex.Pattern;
 
 public class Modulbeschreibungen
 {
+	List<Studiengang> Studium = new ArrayList<Studiengang>();
+	
 
 	public static void main(String[] args) throws IOException
-	{
-		List<String> in = Files.readAllLines(Paths.get("C:\\Users\\pi890\\eclipse-workspace\\Java2\\src\\Data"));
-		
-		for(int i = 0; i < in.size(); i++)
-		{
-			if(in.get(i).equals(""))
-			{
-				int start = i;
-				System.out.println(i);
-				for(int j = start; j < in.size() - start; j++)
-				{
-					if(in.get(j).equals(""))
-					{
-						int end = j;
-						
-					}
-				}
-				
-			}
-
-		}
-		
-
-		
-		
-		
+	{		
+		Modulbeschreibungen s = new Modulbeschreibungen("C:\\Users\\pi890\\OneDrive\\Dokumente\\UNI\\Semester 2\\Java2\\Java2\\src\\Data");
 	}
 	
-	public Modulbeschreibungen(String link) throws FileNotFoundException
+	public Modulbeschreibungen(String link) throws IOException
 	{
-		Scanner sc = new Scanner(new File("C:\\Users\\pi890\\eclipse-workspace\\Java2\\src\\Data"));
-		sc.useDelimiter("\n");
-		while(sc.hasNext());
+		List<List<String>> result = load(link);
+		for(List<String> element : result)
 		{
-			System.out.println(sc.next());
+			Studium.add(new Studiengang(element));
 		}
 	}
 
@@ -95,17 +68,21 @@ public class Modulbeschreibungen
 		return null;
 	}
 	
-	public static String load(String filename) throws IOException 
+	public static List<List<String>> load(String filename) throws IOException 
 	{
 		List<List<String>> result = new ArrayList<List<String>>();
 		BufferedReader br = new BufferedReader(new FileReader(filename));
-		
-		StringBuilder sb = new StringBuilder();
-
 		for (String line = br.readLine(); line != null; line = br.readLine())
 		{
-			sb.append(line);
+			List<String> temp = new ArrayList<String>();
+			while(line != null && !line.equals(""))
+			{
+				temp.add(line);
+				line = br.readLine();
+			}
+			result.add(temp);		
 		}
-		return sb.toString();
+		br.close();
+		return result;
 	}
 }
