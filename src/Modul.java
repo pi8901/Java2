@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Studiengang
+public class Modul
 {
 
 	public String bezeichnung;
@@ -15,7 +15,7 @@ public class Studiengang
 	public String verantwortlicher;
 	public List<Veranstaltung> veranstaltungen;
 	
-	public Studiengang(List<String> element)
+	public Modul(List<String> element)
 	{
 		List<String> temp = Arrays.asList(element.get(0).split("\\|"));
 		veranstaltungen = new ArrayList<Veranstaltung>();
