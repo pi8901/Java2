@@ -1,3 +1,4 @@
+package A2;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -120,6 +121,7 @@ public class CharCollection
 
 	CharCollection except(CharCollection cc)
 	{
+		@SuppressWarnings("unchecked")
 		List<Character> copy = (List<Character>) ((ArrayList<Character>) this.list).clone();
 		for (int i = 0; i < cc.size(); i++)
 		{

@@ -1,5 +1,7 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 
 public class Modul
@@ -14,6 +16,7 @@ public class Modul
 	public String pruefungsform;
 	public String verantwortlicher;
 	public List<Veranstaltung> veranstaltungen;
+	public static Map<String, Integer> sws = new HashMap<String, Integer>();
 	
 	public Modul(List<String> element)
 	{
@@ -32,6 +35,26 @@ public class Modul
 		for(int i = 1; i < element.size(); i++)
 		{
 			veranstaltungen.add(new Veranstaltung(element.get(i)));
+		}
+		getSWS();
+	}
+	
+	
+	void getSWS()
+	{
+		if(!this.semester.contains("WPM")) 
+		{
+			for(int i = 0; i < this.veranstaltungen.size(); i++)
+			{
+				if(sws.containsKey(this.studiengang))
+				{
+					sws.put(this.studiengang, this.veranstaltungen.get(i).sws + sws.get(this.studiengang));
+				}
+				else
+				{
+					sws.put(this.studiengang, this.veranstaltungen.get(i).sws);
+				}
+			}
 		}
 	}
 }

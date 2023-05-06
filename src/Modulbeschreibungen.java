@@ -3,14 +3,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import A3.Vorlesung;
+import A3.VorlesungComparator;
 
 public class Modulbeschreibungen
 {
@@ -21,7 +26,8 @@ public class Modulbeschreibungen
 	{		
 		Modulbeschreibungen s = new Modulbeschreibungen("C:\\Users\\pi890\\OneDrive\\Dokumente\\UNI\\Semester 2\\Java2\\Java2\\src\\Data");
 
-		System.out.println(s.getSWS("BI"));
+		s.getSortierteStudiengaenge();
+		System.out.println(Modul.sws);
 	}
 	
 	public Modulbeschreibungen(String link) throws IOException
@@ -47,8 +53,6 @@ public class Modulbeschreibungen
 				{
 					ret.add(matcher.group());
 				}
-				
-				
 			}
 		}
 		
@@ -218,9 +222,24 @@ public class Modulbeschreibungen
 		return ret;
 	}
 	
+	@SuppressWarnings("unchecked")
 	List<String> getSortierteStudiengaenge()
 	{
-		return null;
+		List<String> titles = new ArrayList<>();
+		
+		Object[] a = Modul.sws.entrySet().toArray();
+		Arrays.sort(a, new Comparator() {
+		    public int compare(Object o1, Object o2) {
+		        return ((Map.Entry<String, Integer>) o1).getValue()
+		                   .compareTo(((Map.Entry<String, Integer>) o2).getValue());
+		    }
+		});		
+		
+		for (Object g : a)
+		{
+			titles.add(((Map.Entry<String, Integer>) g).getKey());
+		}
+		return titles;
 	}
 	
 	String getJSON(String studiengang)

@@ -1,5 +1,7 @@
+package A2;
 import static org.junit.Assert.*;
 import org.junit.*;
+
 import java.util.Arrays;
 
 public class CharCollection_Test {

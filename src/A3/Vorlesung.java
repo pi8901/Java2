@@ -1,3 +1,4 @@
+package A3;
 import java.util.List;
 
 public class Vorlesung {
@@ -6,13 +7,12 @@ public class Vorlesung {
 	String Titel;
 	String Dozent;
 	int Teilnehmeranzahl;
-	
+
 	//Geht
 	public Vorlesung(List<String> x)
 	{
-		for(int i = 0; i < x.size(); i++)
-		{
-			if(x.get(i) == "")
+		for (String element : x) {
+			if(element == "" || x.size() != 4)
 			{
 				throw new TextFileFormatException();
 			}
