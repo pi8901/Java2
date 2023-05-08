@@ -5,7 +5,7 @@ public class Veranstaltung
 	public String titel;
 	public String dozent;
 	public int sws;
-	
+
 	public Veranstaltung(String string)
 	{
 		String[] x = string.split("\\|");
