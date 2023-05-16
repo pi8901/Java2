@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.*;
 
 public class KlausurenServer {
+	
     public void run(String[] args) throws IOException {
         
         if (args.length != 1) {
@@ -27,7 +28,7 @@ public class KlausurenServer {
             while (( inputLine = in.readLine()) != null&& !inputLine.equalsIgnoreCase("STOP")) {
             	if (inputLine.equalsIgnoreCase("PUT")) {
         			out.println("1 "+ inputLine);
-				} else {
+				} else if (inputLine.equalsIgnoreCase("PUT")){
 					out.println(inputLine);
 				}
             }
