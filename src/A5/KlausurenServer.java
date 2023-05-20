@@ -1,32 +1,56 @@
 package A5;
 
 import java.net.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.io.*;
 import java.net.*;
 
 public class KlausurenServer {
-	Map<String,Integer> map = new HashMap<>();
+	Map<String,ArrayList<String>> map = new HashMap<String,ArrayList<String>>();
 	int port;
 	
     public KlausurenServer(int port) {
 		this.port = port;
 	}
+    //eig ist der return oldvalue, aber irgendwie ist es die neue Value ???
+    public ArrayList<String> Put(String input) {
+    	
+    	String[] str = input.split(" ");
+		String key = str[1];
+		String value = str[2];
+		value.replaceAll("\\s+","");
+		ArrayList<String> oldvalue = map.get(key);
+		//System.out.println(oldvalue);
+		if (value.contains(",")) {
+			map.put(key, new ArrayList<String>());
+			String[] val = value.split(",");
+			for (int i = 0; i < val.length; i++) {
+				map.get(key).add(val[i]);
+			}
+		}else {
+			ArrayList<String> out = new ArrayList<String>();
+			out.add(value);
+			map.put(key, out);
+		}
+    	return oldvalue;
+    }
+    
+    public ArrayList<String> Get(String input) {
 
-    public String Put() {
-    	
-    	return "Put";
+    	String[] str = input.split(" ");
+		String key = str[1];
+   
+    	return map.get(key);
     }
     
-    public String Get() {
-    	
-    	return "Get";
-    }
+    public ArrayList<String> Del(String input) {
+    	String[] str = input.split(" ");
+		String key = str[1];
     
-    public String Del() {
-    	
-    	return "Del";
+    	return map.remove(key);
     }
     
     public String GetAll() {
@@ -52,27 +76,33 @@ public class KlausurenServer {
             String inputLine;
            
             while (( inputLine = in.readLine()) != null&& !inputLine.equalsIgnoreCase("STOP")) {
-            	if (inputLine.toLowerCase().contains("PUT")) {
-        			out.println(Put());
-        			String[] str = inputLine.split("\\s+");
+            	if (inputLine.toLowerCase().contains("put")) {
+            		if (Put(inputLine) == null) {
+            			out.println("1 ");
+					}else {
+        			out.println("1 " + Put(inputLine));
+					}
         			
-        			
-        			
-				} else if (inputLine.toLowerCase().contains("GET")){
-					out.println(Get());
-					String[] str = inputLine.split("\\s+");
-					
-					
-					
-				}else if(inputLine.toLowerCase().contains("GETALL")) {
+				} else if (inputLine.toLowerCase().contains("getall")){
 					out.println(GetAll());
-					String[] str = inputLine.split("\\s+");
+					
+				
 					
 					
+				}else if(inputLine.toLowerCase().contains("get")) {
+					if (Get(inputLine) == null) {
+            			out.println("0");
+					}else {
+        			out.println("1 " + Get(inputLine));
+					}
+									
 					
-				}else if(inputLine.toLowerCase().contains("DEL")) {
-					out.println(Del());
-					String[] str = inputLine.split("\\s+");
+				}else if(inputLine.toLowerCase().contains("del")) {
+					if (Del(inputLine) == null) {
+            			out.println("0");
+					}else {
+        			out.println("1 " + Del(inputLine));
+					}
 					
 					
 					
