@@ -1,22 +1,48 @@
 package A5;
 
 import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.*;
+import java.net.*;
 
 public class KlausurenServer {
+	Map<String,Integer> map = new HashMap<>();
+	int port;
 	
-    public void run(String[] args) throws IOException {
+    public KlausurenServer(int port) {
+		this.port = port;
+	}
+
+    public String Put() {
+    	
+    	return "Put";
+    }
+    
+    public String Get() {
+    	
+    	return "Get";
+    }
+    
+    public String Del() {
+    	
+    	return "Del";
+    }
+    
+    public String GetAll() {
+    	
+    	return "GetAll";
+    }
+    
+    
+	public void run() throws IOException {
         
-        if (args.length != 1) {
-            System.err.println("Usage: java EchoServer <port number>");
-            System.exit(1);
-        }
         
-        int portNumber = Integer.parseInt(args[0]);
+        int portNumber = port;
         
         try (
             ServerSocket serverSocket =
-                new ServerSocket(Integer.parseInt(args[0]));
+                new ServerSocket(port);
             Socket clientSocket = serverSocket.accept();     
             PrintWriter out =
                 new PrintWriter(clientSocket.getOutputStream(), true);                   
@@ -26,10 +52,32 @@ public class KlausurenServer {
             String inputLine;
            
             while (( inputLine = in.readLine()) != null&& !inputLine.equalsIgnoreCase("STOP")) {
-            	if (inputLine.equalsIgnoreCase("PUT")) {
-        			out.println("1 "+ inputLine);
-				} else if (inputLine.equalsIgnoreCase("PUT")){
-					out.println(inputLine);
+            	if (inputLine.toLowerCase().contains("PUT")) {
+        			out.println(Put());
+        			String[] str = inputLine.split("\\s+");
+        			
+        			
+        			
+				} else if (inputLine.toLowerCase().contains("GET")){
+					out.println(Get());
+					String[] str = inputLine.split("\\s+");
+					
+					
+					
+				}else if(inputLine.toLowerCase().contains("GETALL")) {
+					out.println(GetAll());
+					String[] str = inputLine.split("\\s+");
+					
+					
+					
+				}else if(inputLine.toLowerCase().contains("DEL")) {
+					out.println(Del());
+					String[] str = inputLine.split("\\s+");
+					
+					
+					
+				}else {
+					out.println("Command not found!");
 				}
             }
 			
