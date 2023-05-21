@@ -3,6 +3,7 @@ package A5;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.io.*;
 
@@ -26,6 +27,7 @@ public class KlausurenServer {
 		
 		
 		ArrayList<String> oldval = map.get(key);
+		
 		if (oldval != null) {
 			String list = oldval.get(oldval.size()-1);
 			System.out.println(list);
@@ -55,18 +57,20 @@ public class KlausurenServer {
     	return map.get(key);
     }
     //wenn ich map.remove(key) ausgebe ist das richtig, sobald ich es return falsch ????????
-    public ArrayList<String> Del(String input) {
-    	ArrayList<String> out = null;
-    	try {
+    public List<List<String>> Del(String input) {
+    	List<List<String>> out = new ArrayList<>();
+  
     	String[] str = input.split(" ");
 		String key = str[1];
-		out = Get(input);
-		map.remove(key);
-		System.out.println(out);// wenn Value 1 ist, ist out 1 und null ?
-    	}catch (Exception e) {
-			out.add("0");
+		
+		if (map.containsKey(key) && (!map.get(key).equals(""))) {
+			out.add(map.get(key));
+			out.remove(key);
+			return out;
+		} else {
+			return null;
 		}
-    	return out;
+    	
     }
     
     public String GetAll() {
@@ -110,7 +114,11 @@ public class KlausurenServer {
                         out.println(Del(inputLine));
                     }
 
-                } else {
+                } else if (inputLine.toLowerCase().contains("stop")) {
+                   out.println("1");
+                   clientSocket.close();
+
+                }else {
                     out.println("Command not found!");
                 }
             }
