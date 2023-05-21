@@ -75,65 +75,81 @@ public class KlausurenServer {
     	return "GetAll";
     }
     
-	public void run() throws IOException {
-        
-        
-        int portNumber = port;
-        
+    public void handleRequest(Socket clientSocket) throws IOException {
         try (
-            ServerSocket serverSocket =
-                new ServerSocket(port);
-            Socket clientSocket = serverSocket.accept();     
-            PrintWriter out =
-                new PrintWriter(clientSocket.getOutputStream(), true);                   
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         ) {
             String inputLine;
-           
-            while (( inputLine = in.readLine()) != null&& !inputLine.equalsIgnoreCase("STOP")) {
-            	if (inputLine.toLowerCase().contains("put")) {
-            		if (Put(inputLine) == null) {
-            			out.println("1 ");
-					}else {
-        			out.print("1 ");
-        			out.println(Put(inputLine));
-					}
-        			
-				} else if (inputLine.toLowerCase().contains("getall")){
-					out.println(GetAll());
-					
-				
-					
-					
-				}else if(inputLine.toLowerCase().contains("get")) {
-					if (Get(inputLine) == null) {
-            			out.println("0");
-					}else {
-						out.print("1 ");
-	        			out.println(Get(inputLine));
-					}
-									
-					
-				}else if(inputLine.toLowerCase().contains("del")) {
-					if (Del(inputLine) == null) {
-            			out.println("0");
-					}else {
-						out.print("1 ");
-	        			out.println(Del(inputLine));
-					}
-					
-					
-					
-				}else {
-					out.println("Command not found!");
-				}
+
+            while ((inputLine = in.readLine()) != null && !inputLine.equalsIgnoreCase("STOP")) {
+                if (inputLine.toLowerCase().contains("put")) {
+                    if (Put(inputLine) == null) {
+                        out.println("1 ");
+                    } else {
+                        out.print("1 ");
+                        out.println(Put(inputLine));
+                    }
+
+                } else if (inputLine.toLowerCase().contains("getall")) {
+                    out.println(GetAll());
+
+                } else if (inputLine.toLowerCase().contains("get")) {
+                    if (Get(inputLine) == null) {
+                        out.println("0");
+                    } else {
+                        out.print("1 ");
+                        out.println(Get(inputLine));
+                    }
+
+                } else if (inputLine.toLowerCase().contains("del")) {
+                    if (Del(inputLine) == null) {
+                        out.println("0");
+                    } else {
+                        out.print("1 ");
+                        out.println(Del(inputLine));
+                    }
+
+                } else {
+                    out.println("Command not found!");
+                }
             }
-			
         } catch (IOException e) {
-            System.out.println("Exception caught when trying to listen on port "
-                + portNumber + " or listening for a connection");
+            System.out.println("Exception caught when handling client request");
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void run() {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("Server started. Listening on port " + port);
+
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
+
+                Thread thread = new Thread(() -> {
+                    try {
+                        handleRequest(clientSocket);
+                    } catch (IOException e) {
+                        System.out.println("Exception caught when handling client request");
+                        System.out.println(e.getMessage());
+                    } finally {
+                        try {
+                            clientSocket.close();
+                        } catch (IOException e) {
+                            System.out.println("Exception caught when closing client socket");
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                });
+
+                thread.start();
+            }
+        } catch (IOException e) {
+            System.out.println("Exception caught when starting the server");
             System.out.println(e.getMessage());
         }
     }
 }
+
