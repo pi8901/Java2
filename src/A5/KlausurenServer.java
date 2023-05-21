@@ -3,10 +3,10 @@ package A5;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.io.*;
-import java.net.*;
+
+
 
 public class KlausurenServer {
 	Map<String,ArrayList<String>> map = new HashMap<String,ArrayList<String>>();
@@ -22,11 +22,20 @@ public class KlausurenServer {
 		String key = str[1];
 		String value = str[2];
 		value.replaceAll("\\s+","");
-		ArrayList<String> oldvalue = map.get(key);
-		//System.out.println(oldvalue);
+		
+		
+		
+		ArrayList<String> oldval = map.get(key);
+		if (oldval != null) {
+			String list = oldval.get(oldval.size()-1);
+			System.out.println(list);
+		}
+		
+		
 		if (value.contains(",")) {
 			map.put(key, new ArrayList<String>());
 			String[] val = value.split(",");
+			System.out.println(val);
 			for (int i = 0; i < val.length; i++) {
 				map.get(key).add(val[i]);
 			}
@@ -35,7 +44,7 @@ public class KlausurenServer {
 			out.add(value);
 			map.put(key, out);
 		}
-    	return oldvalue;
+    	return oldval;
     }
     
     public ArrayList<String> Get(String input) {
@@ -45,19 +54,26 @@ public class KlausurenServer {
    
     	return map.get(key);
     }
-    
+    //wenn ich map.remove(key) ausgebe ist das richtig, sobald ich es return falsch ????????
     public ArrayList<String> Del(String input) {
+    	ArrayList<String> out = null;
+    	try {
     	String[] str = input.split(" ");
 		String key = str[1];
-    
-    	return map.remove(key);
+		out = Get(input);
+		map.remove(key);
+		System.out.println(out);// wenn Value 1 ist, ist out 1 und null ?
+    	}catch (Exception e) {
+			out.add("0");
+		}
+    	return out;
     }
     
     public String GetAll() {
     	
+    	
     	return "GetAll";
     }
-    
     
 	public void run() throws IOException {
         
@@ -80,7 +96,8 @@ public class KlausurenServer {
             		if (Put(inputLine) == null) {
             			out.println("1 ");
 					}else {
-        			out.println("1 " + Put(inputLine));
+        			out.print("1 ");
+        			out.println(Put(inputLine));
 					}
         			
 				} else if (inputLine.toLowerCase().contains("getall")){
@@ -93,7 +110,8 @@ public class KlausurenServer {
 					if (Get(inputLine) == null) {
             			out.println("0");
 					}else {
-        			out.println("1 " + Get(inputLine));
+						out.print("1 ");
+	        			out.println(Get(inputLine));
 					}
 									
 					
@@ -101,7 +119,8 @@ public class KlausurenServer {
 					if (Del(inputLine) == null) {
             			out.println("0");
 					}else {
-        			out.println("1 " + Del(inputLine));
+						out.print("1 ");
+	        			out.println(Del(inputLine));
 					}
 					
 					
