@@ -77,8 +77,6 @@ public class Server
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-				out.println("Welcome!");
-
 				String inputLine = in.readLine();
 
 				String s = inputLine.replace("\b", "");
@@ -135,9 +133,12 @@ public class Server
 	{
 		String[] str = input.split(" ");
 		String key = str[1];
-
+		if (!map.containsKey(key))
+		{
+			return "0";
+		}
 		map.remove(key);
-		return "Removed key: " + key;
+		return "1";
 
 	}
 
@@ -145,14 +146,26 @@ public class Server
 	{
 		Set<String> keys = map.keySet();
 
-		String f = "";
+		String f = "1 ";
+		if(keys.isEmpty())
+		{
+			return "0";
+		}
+		
+		HashSet<String> temp = new HashSet<String>();
 		for (String e : keys)
 		{
-			f = f + e;
-			System.out.println(e);
-			f = f + get("get" + " " + e);
+			HashSet<String> t2 = map.get(e);
+			t2.removeAll(temp);
+			if(!t2.isEmpty())
+			{
+				f = f + t2 + ",";
+				
+			}
+			temp.addAll(map.get(e));
+			
 		}
-		return f;
+		return f.substring(0, f.length() - 1);
 	}
 
 	private String get(String input)
@@ -174,11 +187,11 @@ public class Server
 		String value = str[2];
 		value.replaceAll("\\s+", "");
 
-		HashSet<String> o = new HashSet<String>(Arrays.asList(value.split(",")));
-		if (map.containsKey(key))
-		{
-			o.addAll(map.get(key));
+		String g = "0";
+		if(map.containsKey(key)) {
+			g = map.get(key).toString();
 		}
+		HashSet<String> o = new HashSet<String>(Arrays.asList(value.split(",")));
 
 		map.put(key, o);
 
@@ -188,6 +201,6 @@ public class Server
 		{
 			f = f + ", " + e;
 		}
-		return f;
+		return f + "\n" + g;
 	}
 }
