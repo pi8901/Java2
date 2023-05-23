@@ -13,6 +13,12 @@ import java.util.Set;
 public class Modulbeschreibungen
 {
 	List<Modul> Studium = new ArrayList<>();
+	
+	public static void main(String[] args) throws IOException
+	{
+		Modulbeschreibungen x = new Modulbeschreibungen("C:\\Users\\pi890\\eclipse-workspace\\Java2\\src\\Data");
+		System.out.println(x.getJSON("BI"));
+	}
 
 	public Modulbeschreibungen(String link) throws IOException
 	{
@@ -46,7 +52,6 @@ public class Modulbeschreibungen
 			}
 
 		}
-
 		return ret;
 	}
 
@@ -294,7 +299,7 @@ public class Modulbeschreibungen
 		for (String line = br.readLine(); line != null; line = br.readLine())
 		{
 			List<String> temp = new ArrayList<>();
-			while (line != null && !line.equals(""))
+			while (line != null && !line.isEmpty())
 			{
 				temp.add(line);
 				line = br.readLine();
