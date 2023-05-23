@@ -136,8 +136,14 @@ public class Server
 		String[] str = input.split(" ");
 		String key = str[1];
 
-		map.remove(key);
-		return "Removed key: " + key;
+		if (map.containsKey(key) && (!map.get(key).isEmpty())) {
+			String out = map.get(key).toString();
+			System.out.println(out);
+			map.remove(key);
+			return "1 " + out;
+		}else {
+		return "0";
+		}
 
 	}
 
@@ -159,12 +165,19 @@ public class Server
 	{
 		String[] str = input.split(" ");
 		String key = str[1];
-		String f = "At key " + key + " is: ";
-		for (String e : map.get(key))
-		{
-			f = f + ", " + e;
+		List<String> list = new ArrayList<>();
+		
+		if (map.containsKey(key)) {
+			list.add(map.get(key).toString());
+			Collections.sort(list);
+			String out = list.toString();
+			out = out.substring(1, out.length()-1);
+			return "1 " + out;
+		} else {
+			return "0";
 		}
-		return f;
+		
+		
 	}
 
 	private String put(String input)
