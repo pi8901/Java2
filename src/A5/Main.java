@@ -19,9 +19,8 @@ public class Main {
 			}
 		}).start();
 		
-		System.out.println("Hello");
-		//t.setUp();
-		//t.all();
+		t.setUp();
+		t.all();
 
 	}
 

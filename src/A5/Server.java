@@ -107,12 +107,11 @@ public class Server
 	public String handleRequest(String in) throws IOException, InterruptedException
 	{
 		String o = "";
-		if (in.toLowerCase().contains("STOP"))
+		if (in.toLowerCase().contains("stop"))
 		{
-			System.exit(0);
+			o = "1 ";
 		}
-
-		if (in.toLowerCase().contains("put"))
+		else if (in.toLowerCase().contains("put"))
 		{
 			o = put(in);
 		} else if (in.toLowerCase().contains("getall"))
@@ -137,47 +136,59 @@ public class Server
 		{
 			return "0";
 		}
+		String f = get("get " + key);
 		map.remove(key);
-		return "1";
+		return f;
 
 	}
 
 	private String getAll()
-	{
+	{ 
 		Set<String> keys = map.keySet();
 
-		String f = "1 ";
+		String f = "";
 		if(keys.isEmpty())
 		{
 			return "0";
 		}
 		
-		HashSet<String> temp = new HashSet<String>();
-		for (String e : keys)
+		List<HashSet<String>> elements = new ArrayList<HashSet<String>>();
+		
+		for(String e : keys)
 		{
-			HashSet<String> t2 = map.get(e);
-			t2.removeAll(temp);
-			if(!t2.isEmpty())
-			{
-				f = f + t2 + ",";
-				
-			}
-			temp.addAll(map.get(e));
-			
+			elements.add(map.get(e));
 		}
-		return f.substring(0, f.length() - 1);
+		
+		for(int i = 0; i < elements.size(); i++)
+		{
+			for(int j = 0 ; j < elements.size(); j++)
+			{
+				if(elements.get(i).containsAll(elements.get(j)) && i != j)
+				{
+					elements.remove(j);
+				}
+			}
+		}
+		
+		return "1 " + elements.toString().substring(1, elements.toString().length() - 1).replace(" ", "");
 	}
 
 	private String get(String input)
 	{
 		String[] str = input.split(" ");
 		String key = str[1];
-		String f = "At key " + key + " is: ";
+		String f = "1 ";
+		
+		if(!map.containsKey(key))
+		{
+			return "0";
+		}
+		
 		for (String e : map.get(key))
 		{
-			f = f + ", " + e;
+			f = f  + e + ",";
 		}
-		return f;
+		return f.substring(0, f.length() - 1);
 	}
 	
 
@@ -188,20 +199,15 @@ public class Server
 		String value = str[2];
 		value.replaceAll("\\s+", "");
 
-		String g = "0";
-		if(map.containsKey(key)) {
-			g = map.get(key).toString();
+		String g = "1 ";
+		if(map.containsKey(key)) 
+		{
+			g = get("get " + key);
 		}
 		HashSet<String> o = new HashSet<String>(Arrays.asList(value.split(",")));
 
 		map.put(key, o);
 
-		String f = "Success\n";
-		f = f + "now in the map at key: " + key;
-		for (String e : o)
-		{
-			f = f + ", " + e;
-		}
-		return f + "\n" + g;
+		return g;
 	}
 }

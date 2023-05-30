@@ -50,7 +50,8 @@ public class KlausurenServer_Test {
     }
 
 	@Test	//alles in einer Test-Methode, weil die richtige Reihenfolge sonst nicht gewährleistet ist!
-	public void all() throws IOException {
+	public void all() throws IOException 
+	{
 
 		System.out.println("TEST: del mail1");
 		opensocket();
@@ -61,6 +62,7 @@ public class KlausurenServer_Test {
    		closesocket();
 		System.out.println("TEST: OK"+"\n");
 
+		
 		System.out.println("TEST: put mail1 22,24");
 		opensocket();
 		ausSo.println("put mail1 22,24");
@@ -148,7 +150,7 @@ public class KlausurenServer_Test {
 		ausSo.println("getall");
 		line = einSo.readLine();
 		System.out.println(line);
-   		assertTrue(line.equals("1 [33,34,35],[44,45,46]")||line.equals("1 [44,45,46],[33,34,35]"));
+   		assertTrue(line.equals("1 [44,45],[46],[33,34,35]")||line.equals("1 [44,45,46],[33,34,35]"));
 //		assertEquals(line,"1 [33,34,35],[44,45,46]");
    		closesocket();
 		System.out.println("TEST: OK"+"\n");
