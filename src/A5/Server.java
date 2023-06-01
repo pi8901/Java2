@@ -146,7 +146,6 @@ public class Server
 	{ 
 		Set<String> keys = map.keySet();
 
-		String f = "";
 		if(keys.isEmpty())
 		{
 			return "0";
