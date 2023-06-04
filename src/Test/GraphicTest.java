@@ -4,6 +4,8 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
+import A6.Graphic;
+
 public class GraphicTest extends JFrame {
 
 	private static final long serialVersionUID = 1L;

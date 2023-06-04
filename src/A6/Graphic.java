@@ -1,4 +1,4 @@
-package Test;
+package A6;
 
 import java.awt.Color;
 import java.awt.Dimension;

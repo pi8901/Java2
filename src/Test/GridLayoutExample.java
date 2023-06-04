@@ -1,13 +1,11 @@
-package A6;
+package Test;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-public class GraphicMaze {
+import A6.Graphic;
+
+public class GridLayoutExample {
     private static char[][] maze = {
         {' ','X',' ','X',' ',' '},
         {' ','X',' ',' ',' ','X'},
@@ -22,13 +20,7 @@ public class GraphicMaze {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Graphic graphic = new Graphic(300, 300); // Größe des Panels anpassen
-        JButton vorButton = new JButton("Vor");
-        JButton zurückButton = new JButton("Zurück");
-        JPanel buttonJPanel = new JPanel();
-        buttonJPanel.add(vorButton);
-        buttonJPanel.add(zurückButton);
-        frame.add(graphic,BorderLayout.CENTER);
-        frame.add(buttonJPanel,BorderLayout.SOUTH);
+        frame.add(graphic);
 
         int gridSize = maze.length;
         int cellSize = 50; // Größe der Zellen anpassen
