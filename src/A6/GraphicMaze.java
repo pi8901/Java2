@@ -14,13 +14,12 @@ public class GraphicMaze extends JFrame
 	private static final long serialVersionUID = 1L;
 
 	Container c;
-	Graphic g;
-	int state;
+	static Graphic g;
+	int state = -1;
+	Maze maze;
 
-	public void drawBoard(Maze maze)
+	public void drawBoard(JFrame fenster)
 	{
-		int x = 0;
-		int y = 0;
 		for (int i = 0; i < maze.maze.length; i++)
 		{
 			for (int j = 0; j < maze.maze[1].length; j++)
@@ -32,7 +31,7 @@ public class GraphicMaze extends JFrame
 
 					g.setColor(Color.BLACK);
 					g.drawRect(50 * i, 50 * j, 50, 50);
-				
+
 				} else
 				{
 					g.setColor(Color.BLACK);
@@ -40,44 +39,83 @@ public class GraphicMaze extends JFrame
 				}
 			}
 		}
-		// g.fillRect(100, 0, 100, 100);
 
 		JButton b1 = new JButton("zurück");
 		b1.setBounds(50, 310, 75, 30);
-		g.add(b1);
+		
 
 		b1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				//zurück
-				
-				Point p = maze.points.get(state);
-				g.setColor(Color.blue);
-				g.fillOval(50 * p.x, 50 * p.y, 50, 50);
-				System.out.println(p.x + " " + p.y);
-				state ++;
+				prevPoint();
 			}
 		});
 
 		JButton b2 = new JButton("vor");
 		b2.setBounds(175, 310, 75, 30);
-		g.add(b2);
 		
+
 		b2.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				//zurück
-				System.out.println("Hello");
+				nextPoint();
 			}
 		});
-
+		
+		g.add(b1);
+		g.add(b2);
+		
 		g.redraw();
 	}
 
-	public GraphicMaze()
+	public void drawStatic()
 	{
+		for (Point x : maze.points)
+		{
+			Point p = x;
+			g.setColor(Color.red);
+			g.fillOval(50 * p.x, 50 * p.y, 50, 50);
+		}
+		g.redraw();
+	}
+
+	public void nextPoint()
+	{
+		state++;
+		Point p = maze.points.get(state);
+		g.setColor(Color.red);
+		g.fillOval(50 * p.x, 50 * p.y, 50, 50);
+
+		if (state > 0)
+		{
+			p = maze.points.get(state - 1);
+			g.setColor(Color.BLACK);
+			g.fillRect(50 * p.x, 50 * p.y, 50, 50);
+		}
+		g.redraw();
+	}
+
+	public void prevPoint()
+	{
+		state--;
+		Point p = maze.points.get(state);
+		g.setColor(Color.red);
+		g.fillOval(50 * p.x, 50 * p.y, 50, 50);
+
+		if (state < maze.points.size())
+		{
+			p = maze.points.get(state + 1);
+			g.setColor(Color.BLACK);
+			g.fillRect(50 * p.x, 50 * p.y, 50, 50);
+		}
+		g.redraw();
+	}
+
+	public GraphicMaze(Maze x)
+	{
+		this.maze = x;
 		c = getContentPane();
 		g = new Graphic(300, 350);
 		c.add(g);
@@ -96,11 +134,12 @@ public class GraphicMaze extends JFrame
 
 		Maze mymaze = new Maze(maze);
 		mymaze.canExit(0, 0);
-		GraphicMaze fenster = new GraphicMaze();
+		GraphicMaze fenster = new GraphicMaze(mymaze);
 		fenster.setTitle("Graphic");
 		fenster.pack();
 		fenster.setVisible(true);
 		fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		fenster.drawBoard(mymaze);
+		fenster.drawBoard(fenster);
+		// fenster.drawStatic();
 	}
 }
