@@ -42,7 +42,6 @@ public class GraphicMaze extends JFrame
 
 		JButton b1 = new JButton("zurück");
 		b1.setBounds(50, 310, 75, 30);
-		
 
 		b1.addActionListener(new ActionListener()
 		{
@@ -54,7 +53,6 @@ public class GraphicMaze extends JFrame
 
 		JButton b2 = new JButton("vor");
 		b2.setBounds(175, 310, 75, 30);
-		
 
 		b2.addActionListener(new ActionListener()
 		{
@@ -63,10 +61,10 @@ public class GraphicMaze extends JFrame
 				nextPoint();
 			}
 		});
-		
+
 		g.add(b1);
 		g.add(b2);
-		
+
 		g.redraw();
 	}
 
